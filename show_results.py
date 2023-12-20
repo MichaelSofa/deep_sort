@@ -85,23 +85,29 @@ def parse_args():
     """
     parser = argparse.ArgumentParser(description="Siamese Tracking")
     parser.add_argument(
-        "--sequence_dir", help="Path to the MOTChallenge sequence directory.",
-        default=None, required=True)
+        "--sequence_dir",
+        help="Path to the MOTChallenge sequence directory.",
+        default="./dataset/tracker", required=False)
     parser.add_argument(
-        "--result_file", help="Tracking output in MOTChallenge file format.",
-        default=None, required=True)
+        "--result_file",
+        help="Tracking output in MOTChallenge file format.",
+        default="./tmp/hypotheses.txt", required=False)
     parser.add_argument(
-        "--detection_file", help="Path to custom detections (optional).",
-        default=None)
+        "--detection_file",
+        help="Path to custom detections (optional).",
+        default="./resources/detections/generate/MOT16-15.npy")
     parser.add_argument(
-        "--update_ms", help="Time between consecutive frames in milliseconds. "
+        "--update_ms",
+        help="Time between consecutive frames in milliseconds. "
         "Defaults to the frame_rate specified in seqinfo.ini, if available.",
         default=None)
     parser.add_argument(
-        "--output_file", help="Filename of the (optional) output video.",
-        default=None)
+        "--output_file",
+        help="Filename of the (optional) output video.",
+        default="./tmp/1.avi")
     parser.add_argument(
-        "--show_false_alarms", help="Show false alarms as red bounding boxes.",
+        "--show_false_alarms",
+        help="Show false alarms as red bounding boxes.",
         type=bool, default=False)
     return parser.parse_args()
 

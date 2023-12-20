@@ -206,7 +206,7 @@ def run(sequence_dir, detection_file, output_file, min_confidence,
         visualizer = visualization.NoVisualization(seq_info)
     visualizer.run(frame_callback)
 
-    # Store results.
+    # Store results. # 把目标检测结果数据写入到
     f = open(output_file, 'w')
     for row in results:
         print('%d,%d,%.2f,%.2f,%.2f,%.2f,1,-1,-1,-1' % (
@@ -237,7 +237,7 @@ def parse_args():
         "--output_file",
         help="Path to the tracking output file. This file will"
         " contain the tracking results on completion.",
-        default="/tmp/hypotheses.txt")
+        default="./tmp/hypotheses.txt")
     parser.add_argument(
         "--min_confidence",
         help="Detection confidence threshold. Disregard "

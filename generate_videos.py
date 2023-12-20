@@ -16,20 +16,25 @@ def parse_args():
     """
     parser = argparse.ArgumentParser(description="Siamese Tracking")
     parser.add_argument(
-        "--mot_dir", help="Path to MOTChallenge directory (train or test)",
+        "--mot_dir",
+        help="Path to MOTChallenge directory (train or test)",
         required=True)
     parser.add_argument(
-        "--result_dir", help="Path to the folder with tracking output.",
+        "--result_dir",
+        help="Path to the folder with tracking output.",
         required=True)
     parser.add_argument(
-        "--output_dir", help="Folder to store the videos in. Will be created "
+        "--output_dir",
+        help="Folder to store the videos in. Will be created "
         "if it does not exist.",
         required=True)
     parser.add_argument(
-        "--convert_h264", help="If true, convert videos to libx264 (requires "
+        "--convert_h264",
+        help="If true, convert videos to libx264 (requires "
         "FFMPEG", default=False)
     parser.add_argument(
-        "--update_ms", help="Time between consecutive frames in milliseconds. "
+        "--update_ms",
+        help="Time between consecutive frames in milliseconds. "
         "Defaults to the frame_rate specified in seqinfo.ini, if available.",
         default=None)
     return parser.parse_args()
