@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # vim: expandtab:ts=4:sw=4
 import os
 import errno
@@ -72,14 +73,14 @@ class ImageEncoder(object):
 
     def __init__(self, checkpoint_filename, input_name="images",
                  output_name="features"):
-        self.session = tf.Session()
-        with tf.gfile.GFile(checkpoint_filename, "rb") as file_handle:
-            graph_def = tf.GraphDef()
+        self.session = tf.compat.v1.Session()
+        with tf.compat.v1.gfile.GFile(checkpoint_filename, "rb") as file_handle:
+            graph_def = tf.compat.v1.GraphDef()
             graph_def.ParseFromString(file_handle.read())
-        tf.import_graph_def(graph_def, name="net")
-        self.input_var = tf.get_default_graph().get_tensor_by_name(
+        tf.compat.v1.import_graph_def(graph_def, name="net")
+        self.input_var = tf.compat.v1.get_default_graph().get_tensor_by_name(
             "net/%s:0" % input_name)
-        self.output_var = tf.get_default_graph().get_tensor_by_name(
+        self.output_var = tf.compat.v1.get_default_graph().get_tensor_by_name(
             "net/%s:0" % output_name)
 
         assert len(self.output_var.get_shape()) == 2
@@ -144,18 +145,24 @@ def generate_detections(encoder, mot_dir, output_dir, detection_dir=None):
         else:
             raise ValueError(
                 "Failed to created output directory '%s'" % output_dir)
-
+    print("mot_dir:")
+    print(mot_dir)
     for sequence in os.listdir(mot_dir):
         print("Processing %s" % sequence)
         sequence_dir = os.path.join(mot_dir, sequence)
-
+        print("sequence_dir:")
+        print(sequence_dir)
         image_dir = os.path.join(sequence_dir, "img1")
+        print("image_dir:")
+        print(image_dir)
         image_filenames = {
             int(os.path.splitext(f)[0]): os.path.join(image_dir, f)
             for f in os.listdir(image_dir)}
 
         detection_file = os.path.join(
             detection_dir, sequence, "det/det.txt")
+        print("detection_file:")
+        print(detection_file)
         detections_in = np.loadtxt(detection_file, delimiter=',')
         detections_out = []
 
@@ -187,18 +194,23 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Re-ID feature extractor")
     parser.add_argument(
         "--model",
-        default="resources/networks/mars-small128.pb",
-        help="Path to freezed inference graph protobuf.")
+        default="../resources/networks/mars-small128.pb",
+        help="Path to frozen inference graph protobuf.")
     parser.add_argument(
-        "--mot_dir", help="Path to MOTChallenge directory (train or test)",
-        required=True)
+        "--mot_dir",
+        default="../dataset/generate",
+        help="Path to MOTChallenge directory (train or test)",
+        required=False)
     parser.add_argument(
-        "--detection_dir", help="Path to custom detections. Defaults to "
+        "--detection_dir",
+        help="Path to custom detections. Defaults to "
         "standard MOT detections Directory structure should be the default "
-        "MOTChallenge structure: [sequence]/det/det.txt", default=None)
+        "MOTChallenge structure: [sequence]/det/det.txt",
+        default="../dataset/generate")
     parser.add_argument(
         "--output_dir", help="Output directory. Will be created if it does not"
-        " exist.", default="detections")
+        " exist.",
+        default="../resources/detections/generate")
     return parser.parse_args()
 
 
